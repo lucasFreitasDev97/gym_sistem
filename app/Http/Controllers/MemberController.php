@@ -2,17 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\MemberService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class MemberController extends Controller
 {
+    protected MemberService $memberService;
+
+    public function __construct(MemberService $memberService)
+    {
+        $this->memberService = $memberService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(): View
     {
-        return view('members.index');
+        $members = $this->memberService->getAllMembers();
+        return view('members.index', [
+            'members' => $members,
+        ]);
     }
 
     /**
